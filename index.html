@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cuenta regresiva</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      padding-top: 5vh;
+      margin: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Puntos fondo animado */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 25vw;
+      height: 100vh;
+      background-image: radial-gradient(#a3a3a3 1px, transparent 1px);
+      background-size: 20px 20px;
+      animation: moverPuntos 10s linear infinite;
+      z-index: 0;
+      opacity: 0.3;
+    }
+
+    @keyframes moverPuntos {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 500px; }
+    }
+
+    /* Cintillo de acentos animado */
+    .cintillo-acento {
+      position: absolute;
+      bottom: 5vh;
+      left: 0;
+      width: 200%;
+      height: 6vw;
+      background-image: url('cintillo-acentos.png');
+      background-repeat: repeat-x;
+      background-size: contain;
+      animation: moverCintillo 12s linear infinite;
+      z-index: 1;
+      opacity: 0.8;
+    }
+
+    @keyframes moverCintillo {
+      0% { background-position-x: -100%; }
+      100% { background-position-x: 0%; }
+    }
+
+    .heading, #fullscreen-toggle, .image-container, #countdown, .image-containerch {
+      position: relative;
+      z-index: 2;
+    }
+
+    #fullscreen-toggle {
+      position: absolute;
+      top: 2vh;
+      left: 2vw;
+      font-size: 3vw;
+      color: white;
+      cursor: pointer;
+      z-index: 3;
+    }
+
+    .heading {
+      font-size: 2vw;
+      font-weight: 600;
+      margin-bottom: -1vh;
+    }
+
+    .image-container {
+      margin-top: 5vh;
+      padding-bottom: 1vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: heartbeat 1s infinite ease-in-out;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .image-container img {
+      width: 40vw;
+      max-width: 300px;
+      height: auto;
+    }
+
+    #countdown {
+      font-size: 5vw;
+      margin-top: 2vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: nowrap;
+    }
+
+    .time {
+      display: inline-block;
+      margin: 0 2vw;
+      text-align: center;
+      width: 10vw;
+      height: 10vw;
+      background-color: rgb(214, 126, 2);
+      color: #000;
+      border-radius: 1vw;
+      line-height: 10vw;
+      font-size: 6vw;
+      font-weight: 900;
+    }
+
+    .label {
+      display: block;
+      font-size: 2vw;
+      color: #fff;
+      margin-top: -3vh;
+    }
+
+    .separator {
+      display: inline-block;
+      font-size: 7vw;
+      color: #fff;
+      vertical-align: top;
+      margin: 0 0vw;
+    }
+
+    .image-containerch {
+      margin-top: 10vh;
+      padding-bottom: 1vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .image-containerch img {
+      width: 100%;
+      max-width: 250px;
+      height: auto;
+    }
+
+    @media screen and (max-width: 600px) {
+      #fullscreen-toggle { font-size: 6vw; }
+      .time {
+        width: 15vw;
+        height: 15vw;
+        line-height: 15vw;
+        font-size: 7vw;
+      }
+      .label { font-size: 3vw; }
+      .separator { font-size: 6vw; }
+      .image-container { margin-top: 8vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="fullscreen-toggle">+</div>
+
+  <div class="heading">preparate... se viene</div>
+
+  <!-- Imagen principal animada -->
+  <div class="image-container">
+    <img src="maraton.png" alt="Maratón de Ofertas">
+  </div>
+
+  <!-- Cuenta regresiva -->
+  <div id="countdown">
+    <div class="time"><span id="days">00</span><div class="label">Días</div></div>
+    <span class="separator">:</span>
+    <div class="time"><span id="hours">00</span><div class="label">Horas</div></div>
+    <span class="separator">:</span>
+    <div class="time"><span id="minutes">00</span><div class="label">Minutos</div></div>
+    <span class="separator">:</span>
+    <div class="time"><span id="seconds">00</span><div class="label">Segundos</div></div>
+  </div>
+
+  <!-- Logo ChangoMas -->
+  <div class="image-containerch">
+    <img src="logo-web_nuevo_1.png" alt="ChangoMas Logo">
+  </div>
+
+  <!-- Cintillo animado de acentos -->
+  <div class="cintillo-acento"></div>
+
+  <script>
+    (function () {
+      var eventDate = new Date("Jun 19, 2025 08:00:00").getTime();
+      function updateCountdown() {
+        var now = new Date().getTime();
+        var distance = eventDate - now;
+        if (distance < 0) distance = 0;
+
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("days").textContent = ('0' + days).slice(-2);
+        document.getElementById("hours").textContent = ('0' + hours).slice(-2);
+        document.getElementById("minutes").textContent = ('0' + minutes).slice(-2);
+        document.getElementById("seconds").textContent = ('0' + seconds).slice(-2);
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
+
+    const fullscreenToggle = document.getElementById('fullscreen-toggle');
+    let isFullscreen = false;
+    fullscreenToggle.addEventListener('click', function () {
+      if (!isFullscreen) {
+        (document.documentElement.requestFullscreen ||
+         document.documentElement.webkitRequestFullscreen ||
+         document.documentElement.mozRequestFullScreen ||
+         document.documentElement.msRequestFullscreen
+        ).call(document.documentElement);
+        isFullscreen = true;
+        fullscreenToggle.textContent = "-";
+      } else {
+        (document.exitFullscreen ||
+         document.webkitExitFullscreen ||
+         document.mozCancelFullScreen ||
+         document.msExitFullscreen
+        ).call(document);
+        isFullscreen = false;
+        fullscreenToggle.textContent = "+";
+      }
+    });
+  </script>
+
+</body>
+</html>
+
