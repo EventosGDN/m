@@ -61,38 +61,49 @@
     }
 
     #countdown {
-      font-size: 5vw;
-      margin-top: 4vh;
       display: flex;
       justify-content: center;
-      flex-wrap: wrap;
-      gap: 4vw;
+      gap: 10vw;
+      margin-top: 4vh;
       z-index: 2;
       position: relative;
     }
 
+    .col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4vw;
+    }
+
     .time {
-      width: 18vw;
-      height: 18vw;
+      width: 22vw;
+      height: 22vw;
       background-color: rgb(255, 149, 0);
       color: #000;
       border-radius: 4vw;
-      font-size: 6vw;
+      font-size: 7vw;
       font-weight: bold;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
+      box-shadow: 0 0 10px rgba(255, 149, 0, 0.5);
+      animation: pulso 2s infinite ease-in-out;
+    }
+
+    @keyframes pulso {
+      0%, 100% { box-shadow: 0 0 10px rgba(255, 149, 0, 0.5); }
+      50% { box-shadow: 0 0 25px rgba(255, 149, 0, 0.9); }
     }
 
     .label {
-      font-size: 3vw;
+      font-size: 4vw;
       color: #fff;
       margin-top: 1vh;
     }
 
     .image-containerch {
-      margin-top: 6vh;
+      margin-top: 10vh;
       display: flex;
       justify-content: center;
       z-index: 2;
@@ -100,8 +111,8 @@
     }
 
     .image-containerch img {
-      width: 50vw;
-      max-width: 200px;
+      width: 70vw;
+      max-width: 320px;
       height: auto;
     }
 
@@ -123,6 +134,35 @@
       0% { background-position-x: -100%; }
       100% { background-position-x: 0%; }
     }
+
+    /* Corazones flotando estilo Instagram */
+    #heart-container {
+      position: fixed;
+      bottom: 10vh;
+      right: 5vw;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: 0;
+      font-size: 24px;
+      color: #ff4f81;
+      animation: flotar 2s linear forwards;
+      opacity: 0.8;
+    }
+
+    @keyframes flotar {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) scale(1.5);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
@@ -134,10 +174,18 @@
   </div>
 
   <div id="countdown">
-    <div class="time"><span id="days">00</span><div class="label">Días</div></div>
-    <div class="time"><span id="hours">00</span><div class="label">Horas</div></div>
-    <div class="time"><span id="minutes">00</span><div class="label">Minutos</div></div>
-    <div class="time"><span id="seconds">00</span><div class="label">Segundos</div></div>
+    <div class="col">
+      <div class="time"><span id="days">00</span></div>
+      <div class="label">Días</div>
+      <div class="time"><span id="minutes">00</span></div>
+      <div class="label">Minutos</div>
+    </div>
+    <div class="col">
+      <div class="time"><span id="hours">00</span></div>
+      <div class="label">Horas</div>
+      <div class="time"><span id="seconds">00</span></div>
+      <div class="label">Segundos</div>
+    </div>
   </div>
 
   <div class="image-containerch">
@@ -145,8 +193,10 @@
   </div>
 
   <div class="cintillo-acento"></div>
+  <div id="heart-container"></div>
 
   <script>
+    // Cuenta regresiva
     (function () {
       var eventDate = new Date("Jun 19, 2025 08:00:00").getTime();
       function updateCountdown() {
@@ -168,6 +218,16 @@
       updateCountdown();
       setInterval(updateCountdown, 1000);
     })();
+
+    // Corazones flotando
+    setInterval(() => {
+      const heart = document.createElement("div")
+      heart.classList.add("heart")
+      heart.innerText = "❤️"
+      heart.style.left = Math.random() * 20 + "vw"
+      document.getElementById("heart-container").appendChild(heart)
+      setTimeout(() => heart.remove(), 2000)
+    }, 1000)
   </script>
 
 </body>
