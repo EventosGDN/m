@@ -138,19 +138,20 @@
     /* Corazones flotando estilo Instagram */
     #heart-container {
       position: fixed;
-      bottom: 10vh;
-      right: 5vw;
+      left: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100vh;
       pointer-events: none;
-      z-index: 10;
+      z-index: 999;
     }
 
     .heart {
       position: absolute;
       bottom: 0;
-      font-size: 24px;
+      font-size: 36px;
       color: #ff4f81;
       animation: flotar 2s linear forwards;
-      opacity: 0.8;
     }
 
     @keyframes flotar {
@@ -196,41 +197,43 @@
   <div id="heart-container"></div>
 
   <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Cuenta regresiva
-    var eventDate = new Date("Jun 19, 2025 08:00:00").getTime();
-    function updateCountdown() {
-      var now = new Date().getTime();
-      var distance = eventDate - now;
-      if (distance < 0) distance = 0;
+    document.addEventListener("DOMContentLoaded", () => {
+      // Cuenta regresiva
+      var eventDate = new Date("Jun 19, 2025 08:00:00").getTime();
+      function updateCountdown() {
+        var now = new Date().getTime();
+        var distance = eventDate - now;
+        if (distance < 0) distance = 0;
 
-      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      document.getElementById("days").textContent = ('0' + days).slice(-2);
-      document.getElementById("hours").textContent = ('0' + hours).slice(-2);
-      document.getElementById("minutes").textContent = ('0' + minutes).slice(-2);
-      document.getElementById("seconds").textContent = ('0' + seconds).slice(-2);
-    }
+        document.getElementById("days").textContent = ('0' + days).slice(-2);
+        document.getElementById("hours").textContent = ('0' + hours).slice(-2);
+        document.getElementById("minutes").textContent = ('0' + minutes).slice(-2);
+        document.getElementById("seconds").textContent = ('0' + seconds).slice(-2);
+      }
 
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
 
-    // Corazones flotando
-    setInterval(() => {
-  const heart = document.createElement("div");
-  heart.classList.add("heart");
-  heart.innerText = "❤️";
-  heart.style.left = (30 + Math.random() * 40) + "vw"; // entre 30vw y 70vw
-  document.getElementById("heart-container").appendChild(heart);
-  setTimeout(() => heart.remove(), 2000);
-}, 800);
+      // Corazones flotando
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerText = "❤️";
+        heart.style.left = Math.floor(Math.random() * 90) + "vw";
 
-  });
-</script>
-
+        const contenedor = document.getElementById("heart-container");
+        if (contenedor) {
+          contenedor.appendChild(heart);
+          setTimeout(() => heart.remove(), 2000);
+        }
+      }, 1000);
+    });
+  </script>
 
 </body>
 </html>
